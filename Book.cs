@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace lab_2_0
 {
     public interface IBook
