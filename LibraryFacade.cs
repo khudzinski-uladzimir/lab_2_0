@@ -5,11 +5,8 @@ namespace lab_2_0
 {
     public interface ILibraryFacade
     {
-        List<Book> SearchBooks(string query);
         bool BorrowBook(string isbn, string userId);
         bool ReturnBook(string isbn, string userId);
-        List<User> GetAllUsers();
-        User GetUserById(string userId);
     }
 
     public class LibraryFacade : ILibraryFacade
@@ -17,6 +14,7 @@ namespace lab_2_0
         private readonly IBook _bookSearcher;
         private readonly List<User> _users;
         private readonly BorrowedBooksRegistry _borrowedBooks;
+
         public LibraryFacade(IBook bookSearcher, BorrowedBooksRegistry borrowedBooks)
         {
             _bookSearcher = bookSearcher;
@@ -27,21 +25,21 @@ namespace lab_2_0
         public bool BorrowBook(string isbn, string userId)
         {
             List<Book> books = _bookSearcher.Search(isbn);
-            Book foundBook = books.FirstOrDefault(b => b.ISBN == isbn);
-            if (foundBook == null)
+            Book? foundBook = books.Find(b => b.ISBN == isbn);
+            User? foundUser = _users.Find(u => u.Id == userId);
+            if (foundBook == null || foundUser == null)
                 return false;
-            return _borrowedBooks.Borrow(foundBook, userId);
+            return _borrowedBooks.Borrow(foundBook, foundUser);
         }
 
         public bool ReturnBook(string isbn, string userId)
         {
             List<Book> books = _bookSearcher.Search(isbn);
-            Book foundBook = books.FirstOrDefault(b => b.ISBN == isbn);
-            if (foundBook == null)
+            Book? foundBook = books.Find(b => b.ISBN == isbn);
+            User? foundUser = _users.Find(u => u.Id == userId);
+            if (foundBook == null || foundUser == null)
                 return false;
-            return _borrowedBooks.Return(books, userId);
+            return _borrowedBooks.Return(foundBook, foundUser);
         }
-
-
     }
 }

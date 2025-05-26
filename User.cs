@@ -1,35 +1,43 @@
-namespace lab_2_0
+﻿namespace lab_2_0
 {
     public class User
     {
         public string Id { get; }
         public string Name { get; }
 
-        // Add a private field to store users
-        private List<User> _users = new List<User>();
+        private static readonly List<User> _users = [];
 
         public User(string id, string name)
         {
             Id = id;
             Name = name;
         }
+
         public static List<User> GetAllUsers()
         {
-            _users.Add(new User("1", "Alice"));
-            _users.Add(new User("2", "Bob"));
             return _users;
         }
 
-        public User GetUserById(string userId)
+        public static void AddUser(User user)
         {
-            foreach (var u in _users)
+            if (!_users.Exists(u => u.Id == user.Id))
+                _users.Add(user);
+        }
+
+        public static bool RemoveUser(string id)
+        {
+            var user = _users.Find(u => u.Id == id);
+            if (user != null)
             {
-                if (u.Id == userId)
-                {
-                    return u;
-                }
+                _users.Remove(user);
+                return true;
             }
-            return null;
+            return false;
+        }
+
+        public static User? FindUserById(string id)
+        {
+            return _users.Find(u => u.Id == id);
         }
     }
 }

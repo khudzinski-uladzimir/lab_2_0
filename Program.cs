@@ -66,48 +66,16 @@ class Program
 
         // --- Простая демонстрация фасада ---
         Console.WriteLine("\n--- Facade Pattern Demo ---");
-        ILibraryFacade library = new LibraryFacade(searcher);
+        BorrowedBooksRegistry registry = new BorrowedBooksRegistry();
+        ILibraryFacade library = new LibraryFacade(searcher, registry);
+        // Добавляем пользователей
+        User.AddUser(new User("user1", "John Doe"));
+        User.AddUser(new User("user2", "Jane Smith"));
 
-        // Поиск книг через фасад
-        var foundBooks = library.SearchBooks(query);
-        Console.WriteLine("Books found via Facade:");
-        foreach (var b in foundBooks)
-        {
-            Console.WriteLine(b.GetBookDescription());
-        }
-
-        // Получение пользователей
-        var users = library.GetAllUsers();
-        Console.WriteLine("Users:");
-        foreach (var u in users)
-        {
-            Console.WriteLine(u.Id + ": " + u.Name);
-        }
-
-        // Оформление и возврат книги
-        if (foundBooks.Count > 0 && users.Count > 0)
-        {
-            var bookToBorrow = foundBooks[0];
-            var user = users[0];
-            bool borrowed = library.BorrowBook(bookToBorrow.ISBN, user.Id);
-            if (borrowed)
-            {
-                Console.WriteLine("Book '" + bookToBorrow.Title + "' borrowed by " + user.Name);
-            }
-            else
-            {
-                Console.WriteLine("Book '" + bookToBorrow.Title + "' could not be borrowed");
-            }
-
-            bool returned = library.ReturnBook(bookToBorrow.ISBN, user.Id);
-            if (returned)
-            {
-                Console.WriteLine("Book '" + bookToBorrow.Title + "' returned by " + user.Name);
-            }
-            else
-            {
-                Console.WriteLine("Book '" + bookToBorrow.Title + "' could not be returned");
-            }
-        }
+        // Оформление и возврат книги        
+        Console.WriteLine(library.BorrowBook("1234567890", "user1"));
+        Console.WriteLine(registry.IsBorrowed("1234567890"));
+        Console.WriteLine(library.ReturnBook("1234567890", "user1"));
+        Console.WriteLine(registry.IsBorrowed("1234567890"));
     }
 }
