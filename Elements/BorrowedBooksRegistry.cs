@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using lab_2_0.Elements;
 
-namespace lab_2_0
+namespace lab_2_0.Book
 {
     // Класс для хранения информации об одолженных книгах
     public class BorrowedBooksRegistry

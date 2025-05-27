@@ -1,4 +1,9 @@
-namespace lab_2_0
+using lab_2_0.Book;
+using BookEntity = lab_2_0.Book.Book;
+
+
+
+namespace lab_2_0.Adapter
 {
     // Адаптер: преобразует вызовы IBook в вызовы LegacyBook
     public class LegacyBookSearcherAdapter : IBook
@@ -10,17 +15,23 @@ namespace lab_2_0
             _legacySearcher = legacySearcher;
         }
 
-        public List<Book> Search(string query)
+        public List<BookEntity> Search(string query)
         {
             // Получаем список LegacyBook из старой системы
             List<LegacyBook> legacyBooks = _legacySearcher.FindBooksByKeyword(query);
 
             // Преобразуем каждый LegacyBook в новый объект Book
-            List<Book> books = new List<Book>();
+            List<BookEntity> books = [];
             foreach (var lb in legacyBooks)
             {
                 // Создаём новый объект Book на основе данных из LegacyBook
-                Book book = new Book(lb.Title, lb.AuthorName, lb.Code);
+                BookEntity book = new(lb.Title,
+                                      lb.Code,
+                                      1991,
+                                      lb.AuthorName,
+                                      "unknown",
+                                      "unknown",
+                                      "unknown");
                 books.Add(book);
             }
 

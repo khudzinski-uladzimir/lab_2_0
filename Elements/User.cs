@@ -1,4 +1,4 @@
-﻿namespace lab_2_0
+﻿namespace lab_2_0.Elements
 {
     public class User
     {

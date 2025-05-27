@@ -1,17 +1,22 @@
-namespace lab_2_0
-{
-    public abstract class BookDecorator : Book
-    {
-        protected Book _book;
+using lab_2_0.Book;
+using BookEntity = lab_2_0.Book.Book;
 
-        public BookDecorator(Book book)
+namespace lab_2_0.Decorator
+{
+    public abstract class BookDecorator : BookEntity
+    {
+        protected BookEntity _book;
+
+        protected BookDecorator(BookEntity book)
+                        : base(book.Title, book.ISBN, book.Year, book.author.Name, book.author.Country, book.publisher.Name, book.publisher.City)
+
         {
-            this._book = book;
+            _book = book;
         }
 
         public new virtual string GetBookDescription()
         {
-            return this._book.GetBookDescription();
+            return _book.GetBookDescription();
         }
     }
 
@@ -20,12 +25,12 @@ namespace lab_2_0
         // Свойство рейтинга с дефолтным значением
         public double Rating { get; set; } = 0.0;
 
-        public BookWithRating(Book book)
+        public BookWithRating(BookEntity book)
             : base(book) { }
 
         public override string GetBookDescription()
         {
-            return $"{base.GetBookDescription()}, Rating: {this.Rating}";
+            return $"{base.GetBookDescription()}, Rating: {Rating}";
         }
     }
 
@@ -34,12 +39,12 @@ namespace lab_2_0
         // Свойство просмотра с дефолтным значением
         public bool ViewStatus { get; set; } = false;
 
-        public BookWithWiewStatus(Book book)
+        public BookWithWiewStatus(BookEntity book)
             : base(book) { }
 
         public override string GetBookDescription()
         {
-            return $"{base.GetBookDescription()}, View Status: {this.ViewStatus}";
+            return $"{this.GetBookDescription()}, View Status: {ViewStatus}";
         }
     }
 }

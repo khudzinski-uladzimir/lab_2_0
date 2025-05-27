@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
+using lab_2_0.Composite;
+using lab_2_0.Flyweight;
 
-namespace lab_2_0
+namespace lab_2_0.Book
 {
     public interface IBook
     {
@@ -12,35 +12,48 @@ namespace lab_2_0
     public class Book : IBook, IComponent
     {
         public string Title { get; }
-        public string Author { get; }
         public string ISBN { get; }
+        public int Year { get; private set; }
 
-        public Book(string title, string author, string isbn)
+        // Это ссылки на легковесы (внутреннее состояние)
+        public readonly Author author;
+        public readonly Publisher publisher;
+
+        public Book(string title, string isbn, int year,
+                         string authorName, string authorCountry,
+                         string publisherName, string publisherCity)
         {
             Title = title;
-            Author = author;
             ISBN = isbn;
-        }
+            Year = year;
 
-        public Book()
-        {
-            Title = "Test Book";
-            Author = "Test Author";
-            ISBN = "Test ISBN";
+            // Получаем автора и издательство через фабрики
+            author = AuthorFactory.GetAuthor(authorName, authorCountry);
+            publisher = PublisherFactory.GetPublisher(publisherName, publisherCity);
         }
 
         public List<Book> Search(string query)
         {
             return new List<Book>
             {
-                new Book("Book 1", "Jon Skeet", "1234567890"),
-                new Book("Book 2", "Adam Freeman", "0987654321"),
+                new("Book 1","34564565", 1991, "unknown", "unknown", "unknown", "unknown")
             };
+        }
+
+        public void ShowBookInfo()
+        {
+            Console.WriteLine($"Book: {Title} ({Year})");
+            Console.WriteLine($"ISBN: {ISBN}");
+
+            // Передаем внешнее состояние в методы легковесов
+            author.ShowInfo(Title);
+            publisher.ShowInfo(Title, Year);
+            Console.WriteLine("---");
         }
 
         public virtual string GetBookDescription()
         {
-            return $"Title: {Title}, Author: {Author}, ISBN: {ISBN}";
+            return $"Title: {Title}, ISBN: {ISBN}";
         }
 
         // Реализация интерфейса IComponent
@@ -80,8 +93,7 @@ namespace lab_2_0
         {
             return new List<LegacyBook>
             {
-                new LegacyBook("Book 1", "Jon Skeet", "1234567890"),
-                new LegacyBook("Book 2", "Adam Freeman", "0987654321"),
+                new LegacyBook("Book 1", "Jon Skeet", "1234567890")
             };
         }
     }

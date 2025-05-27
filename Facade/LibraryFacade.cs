@@ -1,7 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
+using lab_2_0.Book;
+using lab_2_0.Elements;
+using BookEntity = lab_2_0.Book.Book;
 
-namespace lab_2_0
+namespace lab_2_0.Facade
 {
     public interface ILibraryFacade
     {
@@ -24,8 +25,8 @@ namespace lab_2_0
 
         public bool BorrowBook(string isbn, string userId)
         {
-            List<Book> books = _bookSearcher.Search(isbn);
-            Book? foundBook = books.Find(b => b.ISBN == isbn);
+            List<BookEntity> books = _bookSearcher.Search(isbn);
+            BookEntity? foundBook = books.Find(b => b.ISBN == isbn);
             User? foundUser = _users.Find(u => u.Id == userId);
             if (foundBook == null || foundUser == null)
                 return false;
@@ -34,8 +35,8 @@ namespace lab_2_0
 
         public bool ReturnBook(string isbn, string userId)
         {
-            List<Book> books = _bookSearcher.Search(isbn);
-            Book? foundBook = books.Find(b => b.ISBN == isbn);
+            List<BookEntity> books = _bookSearcher.Search(isbn);
+            BookEntity? foundBook = books.Find(b => b.ISBN == isbn);
             User? foundUser = _users.Find(u => u.Id == userId);
             if (foundBook == null || foundUser == null)
                 return false;
