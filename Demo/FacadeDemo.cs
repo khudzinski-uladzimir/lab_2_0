@@ -15,9 +15,12 @@ namespace lab_2_0.Demo
 
             // Оборачиваем старую систему в адаптер и работаем через интерфейс IBookSearch
             IBook searcher = new LegacyBookSearcherAdapter(legacy);
-            // Создаем фасад для управления библиотекой
+
             BorrowedBooksRegistry registry = new();
+
+            // Создаем фасад для управления библиотекой
             ILibraryFacade library = new LibraryFacade(searcher, registry);
+
             // Добавляем пользователей
             User.AddUser(new User("user1", "John Doe"));
             User.AddUser(new User("user2", "Jane Smith"));

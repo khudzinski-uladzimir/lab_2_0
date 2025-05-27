@@ -8,24 +8,22 @@ namespace lab_2_0.Demo
         public static void RunDemo()
         {
             BookEntity book = new("Test Book", "34564565", 1991, "unknown", "unknown", "unknown", "unknown");
+            Console.WriteLine("Original book:");
             Console.WriteLine(book.GetBookDescription());
-            Console.WriteLine("\n\n");
+            Console.WriteLine();
 
-
-            // Создаём экземпляр класса BookWithRating и BookWithWiewStatus
+            // Добавляем рейтинг
             BookWithRating bookWithRating = new BookWithRating(book);
-
-            // Устанавливаем рейтинг
-            Console.WriteLine("Enter the desired rating for the book:");
             bookWithRating.Rating = 4.5;
+            Console.WriteLine("Book with rating:");
             Console.WriteLine(bookWithRating.GetBookDescription());
-            BookWithWiewStatus bookWithWiewStatus = new BookWithWiewStatus(bookWithRating);
-            Console.WriteLine("\n\n");
+            Console.WriteLine();
 
-            // Устанавливаем статус просмотра
-            Console.WriteLine("Is this book read?:");
-            bookWithWiewStatus.ViewStatus = true;
-            Console.WriteLine(bookWithWiewStatus.GetBookDescription());
+            // Добавляем статус просмотра К КНИГЕ С РЕЙТИНГОМ
+            BookWithWiewStatus bookWithViewStatus = new BookWithWiewStatus(bookWithRating);
+            bookWithViewStatus.ViewStatus = true;
+            Console.WriteLine("Book with rating and view status:");
+            Console.WriteLine(bookWithViewStatus.GetBookDescription());
         }
 
     }

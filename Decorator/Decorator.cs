@@ -14,7 +14,7 @@ namespace lab_2_0.Decorator
             _book = book;
         }
 
-        public new virtual string GetBookDescription()
+        public override string GetBookDescription()
         {
             return _book.GetBookDescription();
         }
@@ -44,7 +44,7 @@ namespace lab_2_0.Decorator
 
         public override string GetBookDescription()
         {
-            return $"{this.GetBookDescription()}, View Status: {ViewStatus}";
+            return $"{base.GetBookDescription()}, View Status: {ViewStatus}";
         }
     }
 }
